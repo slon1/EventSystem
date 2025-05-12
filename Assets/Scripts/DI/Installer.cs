@@ -12,7 +12,8 @@ public class Installer : MonoBehaviour {
 		
 		container.Register<IUIController>(GetComponent<UIController>());
 		container.Register<IEnemyController>(GetComponent<EnemyController>());
-		
+		container.Register(GetComponent<EnemyMover>());
+
 	}
 	
 	

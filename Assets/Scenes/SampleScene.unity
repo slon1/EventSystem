@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 131097367}
   - component: {fileID: 131097369}
   - component: {fileID: 131097370}
+  - component: {fileID: 131097372}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -349,9 +350,6 @@ MonoBehaviour:
   canvas: {fileID: 868831452}
   spawnCount: 40
   spawnAreaSize: {x: 800, y: 600}
-  moveInterval: 0.05
-  moveRange: 75
-  moveSpeed: 1
 --- !u!114 &131097371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,6 +362,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34831457f3a1aaa4fbc79d74cb2b1c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &131097372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131097366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a28ac690d09df14eaa6acaf4e833cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveInterval: 0.05
+  moveRange: 100
+  noiseScale: 0.01
+  waveSpeed: 0.5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

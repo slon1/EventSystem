@@ -14,16 +14,14 @@ public class EnemyController : MonoBehaviour, IEnemyController {
 	[SerializeField] private GameObject enemyPrefab;
 	[SerializeField] private Transform canvas;
 	[SerializeField] private int spawnCount = 50; 
-	[SerializeField] private Vector2 spawnAreaSize = new Vector2(1920, 1080); 
-	[SerializeField] private float moveInterval = 0.1f; 
-	[SerializeField] private float moveRange = 75f; 
-	[SerializeField] private float moveSpeed = 1f; 
+	[SerializeField] private Vector2 spawnAreaSize = new Vector2(1920, 1080); 	
+	
 
 	private ObjectPool<EnemyView> enemyPool;
 	private readonly HashSet<EnemyView> activeEnemies = new();
 	private readonly Dictionary<EnemyView, Vector2> initialPositions = new();
 	private CancellationTokenSource moveCancellationToken;
-
+	private EnemyMover enemyMover;
 	private void Awake() {
 		
 		enemyPool = new ObjectPool<EnemyView>(
@@ -38,8 +36,9 @@ public class EnemyController : MonoBehaviour, IEnemyController {
 	}
 
 	public void Init() {		
-		moveCancellationToken = new CancellationTokenSource();
-		MoveAll(moveCancellationToken.Token).Forget();
+		moveCancellationToken = new CancellationTokenSource();	
+		enemyMover=Installer.GetService<EnemyMover>();
+		
 	}
 
 	private void OnDestroy() {
@@ -64,6 +63,7 @@ public class EnemyController : MonoBehaviour, IEnemyController {
 				activeEnemies.Add(enemy);
 			}
 		}
+		enemyMover.Init(activeEnemies);
 	}
 
 	private EnemyView CreateEnemy() {
@@ -140,30 +140,5 @@ public class EnemyController : MonoBehaviour, IEnemyController {
 			enemyPool.Release(enemy);
 		}
 	}
-
-	private async UniTaskVoid MoveAll(CancellationToken cancellationToken) {
-		while (!cancellationToken.IsCancellationRequested) {
-			foreach (var enemy in activeEnemies) {
-				if (enemy == null || !enemy.gameObject.activeInHierarchy) continue;
-
-				
-				if (!initialPositions.TryGetValue(enemy, out var initialPosition))
-					continue;
-
-				float offset = enemy.GetInstanceID() * 0.1f;
-				float time = Time.time * moveSpeed;
-
-				float xNoise = Mathf.PerlinNoise(time + offset, 0f) * 2f - 1f; // [-1, 1]
-				float yNoise = Mathf.PerlinNoise(0f, time + offset) * 2f - 1f; // [-1, 1]
-
-				Vector2 offsetPosition = new Vector2(xNoise * moveRange, yNoise * moveRange);
-				var rectTransform = enemy.RectTransform;
-				if (rectTransform != null) {
-					rectTransform.anchoredPosition = initialPosition + offsetPosition;
-				}
-			}
-			
-			await UniTask.Delay(TimeSpan.FromSeconds(moveInterval), cancellationToken: cancellationToken);
-		}
-	}
+	
 }
