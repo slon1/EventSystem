@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour {
 	[SerializeField] private TextAsset questJson;
-	private IUIManager uiManager;
+	private IUIController uiManager;
 	private IEnemyController enemyController;
 
 	private TaskLoader taskLoader;
@@ -16,17 +16,20 @@ public class GameManager : MonoBehaviour {
 	
 	
 	private void Start() {
+
 		taskLoader = new TaskLoader(questJson.text);
 		var tasks = taskLoader.LoadAllQuests();
 		taskManager = new TaskManager(tasks);
-		enemyController = Installer.GetService<IEnemyController>();
-		uiManager = Installer.GetService<IUIManager>();
-		uiManager.Init(tasks);
 		taskManager.OnProgress += TaskManager_OnProgress;
-
-		taskManager.StartTasks(3);
+		
+		uiManager = Installer.GetService<IUIController>();
+		uiManager.Init(tasks);
+		
+		enemyController = Installer.GetService<IEnemyController>();
 		enemyController.Init();
 		enemyController.SpawnEnemies();
+
+		taskManager.StartTasks(3);
 	}
 
 	private void TaskManager_OnProgress(IQuestCondition task) {
@@ -41,6 +44,7 @@ public class GameManager : MonoBehaviour {
 		taskManager.CompleteAllTasks();
 		taskManager.OnProgress -= TaskManager_OnProgress;
 		enemyController.Cleanup();
+		uiManager.Clear();
 	}
 	
 }

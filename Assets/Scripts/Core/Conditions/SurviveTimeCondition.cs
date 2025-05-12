@@ -57,7 +57,7 @@ public class SurviveTimeCondition : QuestConditionBase {
 			}
 		}
 		catch (OperationCanceledException) {
-			// Обработка отмены
+			
 		}
 	}
 }

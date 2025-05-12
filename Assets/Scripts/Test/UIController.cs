@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-interface IUIManager {
+interface IUIController {
 	 void UpdateTaskUI(IQuestCondition task);
 	 void Init(List<IQuestCondition> quests);
+	void Clear();
 }
-public class UIController : MonoBehaviour, IUIManager {
+public class UIController : MonoBehaviour, IUIController {
 	[SerializeField] private GameObject taskUIPrefab; 
 	[SerializeField] private Transform root; 
 	[SerializeField] private Sprite defaultTaskIcon; 
@@ -57,5 +58,13 @@ public class UIController : MonoBehaviour, IUIManager {
 			Destroy(taskUI.gameObject);
 			taskUIElements.Remove(task.TaskID);
 		}
+	}
+	public void Clear() {
+		foreach (var taskUI in taskUIElements.Values) {
+			if (taskUI != null) {
+				Destroy(taskUI.gameObject);
+			}
+		}
+		taskUIElements.Clear();
 	}
 }

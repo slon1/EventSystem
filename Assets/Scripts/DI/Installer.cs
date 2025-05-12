@@ -10,7 +10,7 @@ public class Installer : MonoBehaviour {
 	void Awake() {		
 		container = new DIContainer();
 		
-		container.Register<IUIManager>(GetComponent<UIController>());
+		container.Register<IUIController>(GetComponent<UIController>());
 		container.Register<IEnemyController>(GetComponent<EnemyController>());
 		
 	}
