@@ -1,0 +1,24 @@
+[
+    {
+        "$type": "KillEnemiesCondition, Assembly-CSharp",
+        "TaskID": "task_001",
+        "Description": "Убить 10 врагов желтого цвета",
+        "EnemyType": "B",
+        "Count": 10
+    },
+    {
+        "$type": "KillEnemiesCondition, Assembly-CSharp",
+        "TaskID": "task_002",
+        "Description": "Убить 10 врагов любого типа",
+        "EnemyType": null,
+        "Count": 10
+    },
+    {
+        "$type": "SurviveTimeCondition, Assembly-CSharp",
+        "TaskID": "task_003",
+        "Description": "Прожить 120 секунд",
+        "Seconds": 120,
+        "RefreshRate": 3
+        
+    }
+]
